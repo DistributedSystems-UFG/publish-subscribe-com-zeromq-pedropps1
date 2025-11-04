@@ -1,37 +1,43 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/mrIsNMKU)
-# Pub-Sub-Basics-with-ZeroMQ
+## Como Executar o Sistema de Chat
 
-This is a very simple pub-sub app implemented with ZeroMQ. Use it as an example for the pub-sub assignment (topic-based chat system).
+**1. Iniciar o Broker**
 
-### First, install ZeroMQ (on each machine):
+O broker é o servidor central e deve ser executado primeiro. Ele precisa permanecer ativo para que o chat funcione.
+```bash
+python3 broker.py
+```
 
-    sudo apt update
+**2. Iniciar um Cliente**
 
-    sudo apt install python3-zmq
+Para cada usuário, abra um novo terminal e execute o cliente.
+```bash
+python3 chat_client.py
+```
+O programa solicitará:
+1.  Seu **nome de usuário** (ex: `Alice`).
+2.  O **canal inicial** que deseja entrar (ex: `#geral`).
 
-### Or, with virtual environments (also on each machine -- only install pip3 and venv if not yet installed):
+**3. Usando o Chat**
 
-    sudo apt update
-    sudo apt install python3-pip
-    sudo apt install python3-venv
-    python3 -m venv myvenv
-    source myvenv/bin/activate
-    pip3 install pyzmq
+Uma vez conectado, você verá um prompt como `[Alice @ #geral]>`.
 
-### Next, configure the IP address and port number of the publisher's machine in the constPS.py file
+*   **Para enviar uma mensagem:** Simplesmente digite sua mensagem e pressione Enter. Ela será enviada para o seu canal ativo.
+*   **Para usar comandos:** Digite um dos seguintes comandos:
 
-Note: Make sure that this repo is cloned in all the machines used for this experiment.
+| Comando           | Descrição                                         |
+|-------------------|---------------------------------------------------|
+| `/help`           | Mostra a lista de comandos disponíveis.           |
+| `/join <#topico>`   | Entra em um novo canal para receber mensagens.    |
+| `/leave <#topico>`  | Sai de um canal e para de receber suas mensagens. |
+| `/switch <#topico>` | Muda o seu canal ativo (para onde você envia).    |
+| `/quit`           | Sai do chat de forma limpa.                       |
 
-### Then, run the publisher and subscriber:
 
-On the machine for which the IP address was configured:
+**Exemplo de Sessão:**
 
-    python3 publisher.py
-
-On another machine:
-
-    python3 subscriber.py
-
-### Now, add other topics for in the publisher and create subscribers for the new topics.
-
-    
+1.  **Alice** entra no canal `#geral`.
+2.  **Bob** entra no canal `#geral` em outro terminal.
+3.  Alice digita `Oi Bob!` e a mensagem aparece para ambos.
+4.  Alice digita `/join #dev`. Ela agora recebe mensagens do `#geral` e do `#dev`.
+5.  Alice digita `/switch #dev`. Seu prompt muda para `[Alice @ #dev]>`.
+6.  Alice digita `Alguém sabe Python?`. Apenas outros usuários que entraram no canal `#dev` verão esta mensagem. Bob não a verá.
